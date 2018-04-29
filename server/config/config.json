@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "hamdalah",
+    "password": "hamdalah",
+    "database": "irc_development",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "hamdalah",
+    "password": "hamdalah",
+    "database": "irc_test",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "hamdalah",
+    "password": "hamdalah",
+    "database": "irc_production",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
