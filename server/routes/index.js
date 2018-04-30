@@ -1,6 +1,6 @@
 import user from '../controllers/user';
 
-const baseUrl = 'api/v1';
+const baseUrl = '/api/v1';
 
 const routes = app => {
   app.get(`${baseUrl}`, (req, res) => {
@@ -9,7 +9,8 @@ const routes = app => {
     });
   });
 
-  app.post(`${baseUrl}/user/register`, user.register)
+  app.post(`${baseUrl}/user/register`, user.register);
+  app.post(`${baseUrl}/user/signin`, user.signin);
 
 }
 
