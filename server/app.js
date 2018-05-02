@@ -6,7 +6,7 @@ import 'dotenv';
 import routes from './routes';
 
 const app = express();
-const port = process.env.PORT || 8000;
+const port = parseInt(process.env.PORT, 10) || 8000;
 
 app.set('port', port);
 

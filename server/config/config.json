@@ -14,10 +14,6 @@
     "dialect": "postgres"
   },
   "production": {
-    "username": "hamdalah",
-    "password": "hamdalah",
-    "database": "irc_production",
-    "host": "127.0.0.1",
-    "dialect": "postgres"
+    "use_env_variable": "DATABASE_URL"
   }
 }
