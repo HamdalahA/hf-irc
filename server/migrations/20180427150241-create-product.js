@@ -11,11 +11,15 @@ module.exports = {
         type: Sequelize.STRING
       },
       companyId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        references: {
+          model: 'Companies',
+          key: 'id',
+          as: 'recipeId'
+        }
       },
-      list: {
-        type: Sequelize.TEXT, 
-        field: 'product_list'
+      name: {
+        type: Sequelize.STRING
       },
       createdAt: {
         allowNull: false,

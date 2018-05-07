@@ -1,9 +1,12 @@
 import user from '../controllers/user';
 import company from '../controllers/company';
+import product from '../controllers/product';
+
+import validation from '../middleware/validation';
 
 const baseUrl = '/api/v1';
 
-const routes = app => {
+const routes = (app) => {
   app.get(`${baseUrl}`, (req, res) => {
     res.status(200).json({
       message: 'Welcome to IRS- HalalFood Authority'
@@ -17,7 +20,7 @@ const routes = app => {
   app.get(`${baseUrl}/company/:companyId`, company.getSingleCompany);
   app.delete(`${baseUrl}/company/:companyId`, company.deleteCompany);
   app.put(`${baseUrl}/company/:companyId`, company.updateCompany);
-
-}
+  app.post(`${baseUrl}/:companyId/product`, validation.createProduct, product.createProduct);
+};
 
 export default routes;
