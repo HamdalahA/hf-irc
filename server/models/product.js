@@ -6,8 +6,8 @@ export default (sequelize, DataTypes) => {
     companyId: {
       type: DataTypes.INTEGER
     },
-    list: {
-      type: DataTypes.TEXT
+    name: {
+      type: DataTypes.STRING
     }
   });
   product.associate = (models) => {
