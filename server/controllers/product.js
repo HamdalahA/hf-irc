@@ -112,5 +112,54 @@ export default {
       }
       res.status(200).json(foundProduct);
     });
+  },
+  editProduct(request, response) {
+    const { companyId, id } = request.params;
+    const { name, category } = request.body;
+    const updateFields = {};
+    Product
+      .find({
+        where: {
+          [Op.and]: [
+            { id },
+            { companyId }
+          ]
+        }
+      }).then((foundProduct) => {
+        if (!foundProduct) {
+          return response.status(404).json({
+            message: 'Product not found!'
+          });
+        }
+
+        if (name) {
+          updateFields.name = name;
+        }
+
+        if (category) {
+          updateFields.category = category;
+        }
+
+        foundProduct.update(
+          updateFields,
+          {
+            where: {
+              [Op.and]: [
+                { id },
+                { companyId }
+              ]
+            }
+          }
+        ).then((updatedProduct) => {
+          response.status(200).json({
+            message: 'Product updated sucessfully',
+            updatedProduct
+          });
+        });
+      }).catch(() => {
+        response.status(500).json({
+          message: 'Some thing terrible happend :('
+        });
+      });
   }
 };
