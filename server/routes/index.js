@@ -27,6 +27,7 @@ const routes = (app) => {
   app.get(`${baseUrl}/product`, product.getAllProducts);
   app.get(`${baseUrl}/:companyId/product`, product.getProductByCompanyId);
   app.put(`${baseUrl}/:id/:companyId/product`, product.editProduct);
+  app.delete(`${baseUrl}/:id/:companyId/product`, product.deleteProduct);
 };
 
 export default routes;

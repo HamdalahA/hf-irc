@@ -113,9 +113,9 @@ export default {
       res.status(200).json(foundProduct);
     });
   },
-  editProduct(request, response) {
-    const { companyId, id } = request.params;
-    const { name, category } = request.body;
+  editProduct(req, res) {
+    const { companyId, id } = req.params;
+    const { name, category } = req.body;
     const updateFields = {};
     Product
       .find({
@@ -127,7 +127,7 @@ export default {
         }
       }).then((foundProduct) => {
         if (!foundProduct) {
-          return response.status(404).json({
+          return res.status(404).json({
             message: 'Product not found!'
           });
         }
@@ -151,15 +151,49 @@ export default {
             }
           }
         ).then((updatedProduct) => {
-          response.status(200).json({
+          res.status(200).json({
             message: 'Product updated sucessfully',
             updatedProduct
           });
         });
       }).catch(() => {
-        response.status(500).json({
+        res.status(500).json({
           message: 'Some thing terrible happend :('
         });
       });
+  },
+  deleteProduct(req, res) {
+    const { id, companyId } = req.params;
+
+    Product.findOne({
+      where: {
+        [Op.and]: [
+          { id },
+          { companyId }
+        ]
+      }
+    }).then((foundProduct) => {
+      if (!foundProduct) {
+        res.status(404).json({
+          message: 'Product not found'
+        });
+      }
+      Product.destroy({
+        where: {
+          [Op.and]: [
+            { id },
+            { companyId }
+          ]
+        }
+      }).then(() => {
+        res.status(200).json({
+          message: 'Product has been deleted sucessfully!'
+        });
+      });
+    }).catch(() => {
+      res.status(500).json({
+        message: 'something terrible happend :('
+      });
+    });
   }
 };
