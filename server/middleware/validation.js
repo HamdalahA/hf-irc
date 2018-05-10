@@ -24,6 +24,34 @@ export default {
       return res.status(400)
         .json({ message: errors });
     }
+  },
+
+  createCertificate(req, res, next) {
+    const { refNo, imageUrl, expiryDate } = req.body;
+    const { companyId } = req.params;
+
+    const certificateData = {
+      refNo,
+      imageUrl,
+      expiryDate,
+      companyId
+    };
+
+    const certificateRules = {
+      refNo: 'required|integer',
+      imageUrl: 'required|string',
+      expiryDate: 'required|date',
+      companyId: 'required|integer'
+    };
+
+    const validation = new Validator(certificateData, certificateRules);
+    if (validation.passes()) {
+      next();
+    } else {
+      const errors = validation.errors.all();
+      return res.status(400)
+        .json({ message: errors });
+    }
   }
 
 };
