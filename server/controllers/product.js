@@ -94,5 +94,23 @@ export default {
         });
       });
     }
+  },
+  getProductByCompanyId(req, res) {
+    const { companyId } = req.params;
+    Product.findAll({
+      where: {
+        companyId
+      },
+      order: [
+        ['id', 'DESC']
+      ]
+    }).then((foundProduct) => {
+      if (foundProduct.length < 1) {
+        res.status(404).json({
+          message: `Product not found for company with id ${companyId}`
+        });
+      }
+      res.status(200).json(foundProduct);
+    });
   }
 };

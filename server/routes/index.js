@@ -25,6 +25,7 @@ const routes = (app) => {
     validation.createProduct, product.createProduct
   );
   app.get(`${baseUrl}/product`, product.getAllProducts);
+  app.get(`${baseUrl}/:companyId/product`, product.getProductByCompanyId);
 };
 
 export default routes;
