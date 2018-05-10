@@ -10,7 +10,7 @@ export default (sequelize, DataTypes) => {
     imageUrl: {
       type: DataTypes.TEXT
     },
-    expiry_date: {
+    expiryDate: {
       type: DataTypes.DATE
     },
   });
@@ -18,7 +18,7 @@ export default (sequelize, DataTypes) => {
     certificate.belongsTo(models.Company, {
       foreignKey: 'companyId',
       onDelete: 'CASCADE'
-    })
+    });
   };
   return certificate;
 };

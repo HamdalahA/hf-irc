@@ -1,6 +1,6 @@
 export default (sequelize, DataTypes) => {
   const company = sequelize.define('Company', {
-    name: { 
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true
@@ -28,7 +28,7 @@ export default (sequelize, DataTypes) => {
       type: DataTypes.TEXT
     }
   });
-  company.associate = function(models) {
+  company.associate = (models) => {
     company.hasMany(models.Product, {
       foreignKey: 'companyId',
     });
