@@ -36,5 +36,63 @@ export default {
         error: 'Opps, something terible happend!'
       });
     });
+  },
+  getAllProducts(req, res) {
+    let message;
+    if (req.query.search) {
+      const searchQuery = req.query.search.split(' ');
+
+      const name = searchQuery.map(value => ({
+        name: { $iLike: `%${value}%` }
+      }));
+
+      const category = searchQuery.map(value => ({
+        category: { $iLike: `%${value}%` }
+      }));
+
+      Product
+        .findAll({
+          where: {
+            $or:
+            name.concat(category)
+          },
+          order: [
+            ['id', 'DESC']
+          ]
+        }).then((searchResult) => {
+          if (searchResult.length < 1) {
+            return res.status(200).json({
+              message: 'Sorry no product matched your search!'
+            });
+          }
+          res.status(200).json({
+            searchResult
+          });
+        }).catch(() => {
+          res.status(500).json({
+            message: 'something terrible happend :('
+          });
+        });
+    } else {
+      Product.findAll({
+        order: [
+          ['id', 'DESC']
+        ]
+      }).then((allProducts) => {
+        if (allProducts.length < 1) {
+          message = 'No Product have been created!';
+          return res.status(200).json({
+            message
+          });
+        }
+        res.status(200).json({
+          allProducts
+        });
+      }).catch(() => {
+        res.status(500).json({
+          message: 'something terrible happend :('
+        });
+      });
+    }
   }
 };

@@ -20,7 +20,11 @@ const routes = (app) => {
   app.get(`${baseUrl}/company/:companyId`, company.getSingleCompany);
   app.delete(`${baseUrl}/company/:companyId`, company.deleteCompany);
   app.put(`${baseUrl}/company/:companyId`, company.updateCompany);
-  app.post(`${baseUrl}/:companyId/product`, validation.createProduct, product.createProduct);
+  app.post(
+    `${baseUrl}/:companyId/product`,
+    validation.createProduct, product.createProduct
+  );
+  app.get(`${baseUrl}/product`, product.getAllProducts);
 };
 
 export default routes;
