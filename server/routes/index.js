@@ -4,6 +4,7 @@ import product from '../controllers/product';
 import certificate from '../controllers/certificate';
 
 import validation from '../middleware/validation';
+import auth from '../middleware/auth';
 
 const baseUrl = '/api/v1';
 
@@ -14,31 +15,67 @@ const routes = (app) => {
     });
   });
 
-  app.post(`${baseUrl}/user/register`, validation.registerUser, user.register);
-  app.post(`${baseUrl}/user/signin`, validation.singinUser, user.signin);
+  app.post(
+    `${baseUrl}/user/register`,
+    validation.registerUser, user.register
+  );
+  app.post(
+    `${baseUrl}/user/signin`,
+    validation.singinUser, user.signin
+  );
 
-  app.post(`${baseUrl}/company/register`, validation.registerCompany, company.registerCompany);
-  app.get(`${baseUrl}/companies`, company.getAllCompanies);
-  app.get(`${baseUrl}/company/:companyId`, company.getSingleCompany);
-  app.delete(`${baseUrl}/company/:companyId`, company.deleteCompany);
-  app.put(`${baseUrl}/company/:companyId`, company.updateCompany);
+  app.post(
+    `${baseUrl}/company/register`,
+    auth.Verify, validation.registerCompany, company.registerCompany
+  );
+  app.get(
+    `${baseUrl}/companies`,
+    auth.Verify, company.getAllCompanies
+  );
+  app.get(
+    `${baseUrl}/company/:companyId`,
+    auth.Verify, company.getSingleCompany
+  );
+  app.delete(
+    `${baseUrl}/company/:companyId`,
+    auth.Verify, company.deleteCompany
+  );
+  app.put(
+    `${baseUrl}/company/:companyId`,
+    auth.Verify, company.updateCompany
+  );
 
   app.post(
     `${baseUrl}/:companyId/product`,
-    validation.createProduct, product.createProduct
+    auth.Verify, validation.createProduct, product.createProduct
   );
-  app.get(`${baseUrl}/product`, product.getAllProducts);
-  app.get(`${baseUrl}/:companyId/product`, product.getProductByCompanyId);
-  app.put(`${baseUrl}/:id/:companyId/product`, product.editProduct);
-  app.delete(`${baseUrl}/:id/:companyId/product`, product.deleteProduct);
+  app.get(`${baseUrl}/product`, auth.Verify, product.getAllProducts);
+  app.get(
+    `${baseUrl}/:companyId/product`,
+    auth.Verify, product.getProductByCompanyId
+  );
+  app.put(
+    `${baseUrl}/:id/:companyId/product`,
+    auth.Verify, product.editProduct
+  );
+  app.delete(
+    `${baseUrl}/:id/:companyId/product`,
+    auth.Verify, product.deleteProduct
+  );
 
   app.post(
     `${baseUrl}/:companyId/certificate`,
-    validation.createCertificate, certificate.createCertificate
+    auth.Verify, validation.createCertificate, certificate.createCertificate
   );
-  app.get(`${baseUrl}/certificates`, certificate.viewCertificate);
-  app.put(`${baseUrl}/:id/:companyId/certificate`, certificate.editCertificate);
-  app.delete(`${baseUrl}/:id/:companyId/certificate`, certificate.deleteCertificate);
+  app.get(`${baseUrl}/certificates`, auth.Verify, certificate.viewCertificate);
+  app.put(
+    `${baseUrl}/:id/:companyId/certificate`,
+    auth.Verify, certificate.editCertificate
+  );
+  app.delete(
+    `${baseUrl}/:id/:companyId/certificate`,
+    auth.Verify, certificate.deleteCertificate
+  );
 };
 
 export default routes;
