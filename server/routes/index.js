@@ -36,8 +36,8 @@ const routes = (app) => {
     `${baseUrl}/:companyId/certificate`,
     validation.createCertificate, certificate.createCertificate
   );
-  app.get(`${baseUrl}/certificate`, certificate.viewCertificate);
-  
+  app.get(`${baseUrl}/certificates`, certificate.viewCertificate);
+  app.put(`${baseUrl}/:id/:companyId/certificate`, certificate.editCertificate);
 };
 
 export default routes;
