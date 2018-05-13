@@ -9,7 +9,11 @@
     "start": "nodemon --watch server --exec babel-node server/dist/app.js",
     "start:dev": "nodemon ./bin/www",
     "server:dev": "nodemon --watch server --exec babel-node server/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "seed": "sequelize db:seed:all",
+    "migrate": "sequelize db:migrate",
+    "undo": "sequelize db:migrate:undo:all",
+    "reset": "npm run undo && npm run migrate"
   },
   "keywords": [],
   "author": "",

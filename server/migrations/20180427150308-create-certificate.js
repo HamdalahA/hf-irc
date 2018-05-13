@@ -14,8 +14,11 @@ module.exports = {
         as: 'companyId'
       }
     },
+    companyName: {
+      type: Sequelize.STRING
+    },
     refNo: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.STRING,
       unique: true
     },
     imageUrl: {
