@@ -43,18 +43,17 @@ export default {
       const searchQuery = req.query.search.split(' ');
 
       const name = searchQuery.map(value => ({
-        name: { $iLike: `%${value}%` }
+        name: { [Op.iLike]: `%${value}%` }
       }));
 
       const category = searchQuery.map(value => ({
-        category: { $iLike: `%${value}%` }
+        category: { [Op.iLike]: `%${value}%` }
       }));
 
       Product
         .findAll({
           where: {
-            $or:
-            name.concat(category)
+            [Op.or]: name.concat(category)
           },
           order: [
             ['id', 'DESC']

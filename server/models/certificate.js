@@ -3,8 +3,11 @@ export default (sequelize, DataTypes) => {
     companyId: {
       type: DataTypes.INTEGER
     },
+    companyName: {
+      type: DataTypes.STRING
+    },
     refNo: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       unique: true
     },
     imageUrl: {

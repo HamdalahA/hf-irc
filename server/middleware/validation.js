@@ -38,7 +38,7 @@ export default {
     };
 
     const certificateRules = {
-      refNo: 'required|integer',
+      refNo: 'required|integer|min:6',
       imageUrl: 'required|string',
       expiryDate: 'required|date',
       companyId: 'required|integer'
