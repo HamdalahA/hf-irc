@@ -14,10 +14,10 @@ const routes = (app) => {
     });
   });
 
-  app.post(`${baseUrl}/user/register`, user.register);
-  app.post(`${baseUrl}/user/signin`, user.signin);
+  app.post(`${baseUrl}/user/register`, validation.registerUser, user.register);
+  app.post(`${baseUrl}/user/signin`, validation.singinUser, user.signin);
 
-  app.post(`${baseUrl}/company/register`, company.registerCompany);
+  app.post(`${baseUrl}/company/register`, validation.registerCompany, company.registerCompany);
   app.get(`${baseUrl}/companies`, company.getAllCompanies);
   app.get(`${baseUrl}/company/:companyId`, company.getSingleCompany);
   app.delete(`${baseUrl}/company/:companyId`, company.deleteCompany);

@@ -52,6 +52,88 @@ export default {
       return res.status(400)
         .json({ message: errors });
     }
+  },
+
+  registerUser(req, res, next) {
+    const { userName, email, password } = req.body;
+
+    const userData = {
+      userName,
+      email,
+      password
+    };
+
+    const userRules = {
+      userName: 'required|string:min:3',
+      email: 'required|email',
+      password: 'required|string|min:6'
+    };
+
+    const validation = new Validator(userData, userRules);
+    if (validation.passes()) {
+      next();
+    } else {
+      const errors = validation.errors.all();
+      return res.status(400)
+        .json({ message: errors });
+    }
+  },
+
+  singinUser(req, res, next) {
+    const { identifier, password } = req.body;
+
+    const userData = {
+      identifier,
+      password
+    };
+
+    const userRules = {
+      identifier: 'required|string:min:3',
+      password: 'required|string|min:6'
+    };
+
+    const validation = new Validator(userData, userRules);
+    if (validation.passes()) {
+      next();
+    } else {
+      const errors = validation.errors.all();
+      return res.status(400)
+        .json({ message: errors });
+    }
+  },
+
+  registerCompany(req, res, next) {
+    const {
+      name, address, email, regDate, phoneNo, siteAddress
+    } = req.body;
+
+    const userData = {
+      name,
+      address,
+      email,
+      regDate,
+      phoneNo,
+      siteAddress
+    };
+
+    const userRules = {
+      name: 'required|string:min:3',
+      address: 'required|string|min:6',
+      email: 'required|email',
+      regDate: 'required|date',
+      phoneNo: 'required|integer|min:11',
+      siteAddress: 'required|string',
+    };
+
+    const validation = new Validator(userData, userRules);
+    if (validation.passes()) {
+      next();
+    } else {
+      const errors = validation.errors.all();
+      return res.status(400)
+        .json({ message: errors });
+    }
   }
+
 
 };

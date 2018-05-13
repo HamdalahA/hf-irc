@@ -31,12 +31,10 @@ export default {
         companyName,
         expiryDate,
         companyId
-      }).then((certificate) => {
-        res.status(201).json({
-          message: 'Certificate created successfully',
-          certificate
-        });
-      });
+      }).then(certificate => res.status(201).json({
+        message: 'Certificate created successfully',
+        certificate
+      }));
     }).catch((error) => {
       console.log('Certificate error >>', error);
       return res.status(500).json({
@@ -69,13 +67,20 @@ export default {
         where: {
           [Op.or]: refNo.concat(companyName)
         }
-      }).then(searchResult => res.status(200).json({
-        page: (pageValue + 1),
-        totalCount: searchResult.count,
-        pageCount: Math.ceil(searchResult.count / limitValue),
-        pageSize: parseInt(searchResult.rows.length, 10),
-        certificate: searchResult.rows
-      }));
+      }).then((searchResult) => {
+        if (searchResult.length < 1) {
+          return res.status(200).json({
+            message: 'Sorry no Certificate matched your search'
+          });
+        }
+        return res.status(200).json({
+          page: (pageValue + 1),
+          totalCount: searchResult.count,
+          pageCount: Math.ceil(searchResult.count / limitValue),
+          pageSize: parseInt(searchResult.rows.length, 10),
+          certificate: searchResult.rows
+        });
+      });
     } else {
       Certificate.findAndCountAll({
         order: [sort],
@@ -132,8 +137,7 @@ export default {
       if (expiryDate) {
         updateFields.expiryDate = expiryDate;
       }
-
-      console.log('>>>>>>>', updateFields);
+      
       foundCertificate.update(
         updateFields,
         {
