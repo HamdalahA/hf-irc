@@ -44,6 +44,7 @@ export default {
       });
     });
   },
+
   viewCertificate(req, res) {
     const { search } = req.query;
     const limitValue = req.query.limit || 20;
@@ -88,6 +89,72 @@ export default {
         certificate: searchResult.rows
       }));
     }
+  },
+
+  editCertificate(req, res) {
+    const { companyId, id } = req.params;
+    const {
+      refNo, imageUrl, companyName, expiryDate
+    } = req.body;
+    const updateFields = {};
+
+
+    if (isNaN(companyId) || isNaN(id)) {
+      return res.status(400).json({
+        message: 'Parmeters must be nubmers'
+      });
+    }
+
+    Certificate.find({
+      where: {
+        id,
+        companyId
+      }
+    }).then((foundCertificate) => {
+      if (!foundCertificate) {
+        return res.status(404).json({
+          message: 'Certificate Not found'
+        });
+      }
+
+      if (refNo) {
+        updateFields.refNo = refNo;
+      }
+
+      if (imageUrl) {
+        updateFields.imageUrl = imageUrl;
+      }
+
+      if (companyName) {
+        updateFields.companyName = companyName;
+      }
+
+      if (expiryDate) {
+        updateFields.expiryDate = expiryDate;
+      }
+
+      console.log('>>>>>>>', updateFields)
+      foundCertificate.update(
+        updateFields,
+        {
+          where: {
+            [Op.and]: [
+              { id },
+              { companyId }
+            ]
+          }
+        }
+      ).then((updatedCertificate) => {
+        res.status(200).json({
+          message: 'Certificate updated sucessfully',
+          updatedCertificate
+        });
+      }).catch(() => {
+        res.status(500).json({
+          message: 'Some thing terrible happend :('
+        });
+      });
+    });
   }
 };
 
