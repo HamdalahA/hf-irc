@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
 import db from '../models';
 
-const { Certificate, Company } = db;
+const { Certificate } = db;
 const { Op } = Sequelize;
 
 export default {
@@ -51,7 +51,7 @@ export default {
     const sort = req.query.sort ? req.query.sort : 'createdAt';
 
     if (search) {
-      const searchQuery = req.query.search.split(' ');
+      const searchQuery = search.split(' ');
 
       const companyName = searchQuery.map(value => ({
         companyName: { [Op.iLike]: `%${value}%` }

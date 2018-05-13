@@ -29,11 +29,11 @@ export default {
       }).then(product => res.status(201).json({
         message: 'Product has be added succesfully',
         product
-      }));
-    }).catch((error) => {
-      console.log('Product error >>', error);
-      return res.status(500).json({
-        error: 'Opps, something terible happend!'
+      })).catch((error) => {
+        console.log('Product error >>', error);
+        return res.status(500).json({
+          error: 'Opps, something terible happend!'
+        });
       });
     });
   },

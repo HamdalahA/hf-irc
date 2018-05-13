@@ -1,6 +1,8 @@
+import Sequelize from 'sequelize';
 import db from '../models';
 
-const { Company } = db;
+const { Company, Product, Certificate } = db;
+const { Op } = Sequelize;
 
 export default {
   registerCompany(req, res) {
@@ -32,7 +34,7 @@ export default {
           company: newCompany
         })).catch((error) => {
           console.log('>>>>>', error);
-          
+
           return res.status(500).json({
             error: error.message
           });
@@ -43,23 +45,63 @@ export default {
     const limitValue = req.query.limit || 20;
     const pageValue = (req.query.page - 1) || 0;
     const sort = req.query.sort ? req.query.sort : 'createdAt';
-    Company.findAndCountAll({
-      order: [sort],
-      limit: limitValue,
-      offset: pageValue * limitValue
-    }).then(allCompany => res.status(200).json({
-      page: (pageValue + 1),
-      totalCount: allCompany.count,
-      pageCount: Math.ceil(allCompany.count / limitValue),
-      pageSize: parseInt(allCompany.rows.length, 10),
-      Companies: allCompany.rows
-    }));
+    const { search } = req.query;
+
+    if (search) {
+      const searchQuery = search.split(' ');
+
+      const name = searchQuery.map(value => ({
+        name: { [Op.iLike]: `%${value}%` }
+      }));
+
+      const email = searchQuery.map(value => ({
+        email: { [Op.iLike]: `%${value}%` }
+      }));
+
+      Company.findAndCountAll({
+        order: [sort],
+        limit: limitValue,
+        offset: pageValue * limitValue,
+        where: {
+          [Op.or]: name.concat(email)
+        }
+      }).then((allCompany) => {
+        if (allCompany.length < 1) {
+          return res.status(200).json({
+            message: 'Sorry no compay matched your search'
+          });
+        }
+        return res.status(200).json({
+          page: (pageValue + 1),
+          totalCount: allCompany.count,
+          pageCount: Math.ceil(allCompany.count / limitValue),
+          pageSize: parseInt(allCompany.rows.length, 10),
+          Companies: allCompany.rows
+        });
+      });
+    } else {
+      Company.findAndCountAll({
+        order: [sort],
+        limit: limitValue,
+        offset: pageValue * limitValue
+      }).then(allCompany => res.status(200).json({
+        page: (pageValue + 1),
+        totalCount: allCompany.count,
+        pageCount: Math.ceil(allCompany.count / limitValue),
+        pageSize: parseInt(allCompany.rows.length, 10),
+        Companies: allCompany.rows
+      }));
+    }
   },
   getSingleCompany(req, res) {
     Company.findOne({
       where: {
         id: req.params.companyId
-      }
+      },
+      include: [
+        { model: Product },
+        { model: Certificate }
+      ]
     }).then(singleCompany => res.status(200).json({
       companyDetail: singleCompany
     })).catch(error => res.status(500).json({
@@ -68,7 +110,7 @@ export default {
   },
   updateCompany(req, res) {
     const {
-      name, address, email, regDate, phoneNo, siteAddress
+      name, address, regDate, phoneNo, siteAddress
     } = req.body;
 
     Company.find({
@@ -90,9 +132,6 @@ export default {
       }).then(updatedCompany => res.status(200).json({
         updatedCompany
       }));
-      return res.status(403).json({
-        error: 'You are not authorized to update this company'
-      });
     }).catch(error => res.status(500).json({
       error: error.message
     }));
@@ -108,15 +147,10 @@ export default {
           error: 'Company not registered'
         });
       }
-      // if (companyFound.id === id) {
       return companyFound.destroy(companyFound)
         .then(() => res.status(200).json({
           message: 'Company successfully removed'
         }));
-      // }
-      return res.status(403).send({
-        error: 'You are not authorized to delete this company'
-      });
     })
       .catch(error => res.status(500).json({
         error: error.message
