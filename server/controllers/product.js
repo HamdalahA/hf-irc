@@ -164,6 +164,12 @@ export default {
   deleteProduct(req, res) {
     const { id, companyId } = req.params;
 
+    if (isNaN(companyId) || isNaN(id)) {
+      return res.status(400).json({
+        message: 'Parmeters must be nubmers'
+      });
+    }
+
     Product.findOne({
       where: {
         [Op.and]: [
@@ -173,7 +179,7 @@ export default {
       }
     }).then((foundProduct) => {
       if (!foundProduct) {
-        res.status(404).json({
+        return res.status(404).json({
           message: 'Product not found'
         });
       }
@@ -184,11 +190,9 @@ export default {
             { companyId }
           ]
         }
-      }).then(() => {
-        res.status(200).json({
-          message: 'Product has been deleted sucessfully!'
-        });
-      });
+      }).then(() => res.status(200).json({
+        message: 'Product has been deleted sucessfully!'
+      }));
     }).catch(() => {
       res.status(500).json({
         message: 'something terrible happend :('
