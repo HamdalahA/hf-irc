@@ -38,6 +38,7 @@ const routes = (app) => {
   );
   app.get(`${baseUrl}/certificates`, certificate.viewCertificate);
   app.put(`${baseUrl}/:id/:companyId/certificate`, certificate.editCertificate);
+  app.delete(`${baseUrl}/:id/:companyId/certificate`, certificate.deleteCertificate);
 };
 
 export default routes;
