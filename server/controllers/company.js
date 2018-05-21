@@ -7,7 +7,7 @@ const { Op } = Sequelize;
 export default {
   registerCompany(req, res) {
     const {
-      name, address, email, regDate, phoneNo, siteAddress
+      name, address, email, regDate, phoneNo, siteAddress, contactPerson
     } = req.body;
     Company.findOne({
       where: {
@@ -27,18 +27,15 @@ export default {
           email,
           regDate,
           phoneNo,
-          siteAddress
+          siteAddress,
+          contactPerson
         }).then(newCompany => res.status(201).json({
           status: 200,
           message: `You have successfully registered ${name}`,
           company: newCompany
-        })).catch((error) => {
-          console.log('>>>>>', error);
-
-          return res.status(500).json({
-            error: error.message
-          });
-        });
+        })).catch(error => res.status(500).json({
+          error: error.message
+        }));
       });
   },
   getAllCompanies(req, res) {
@@ -68,7 +65,7 @@ export default {
       }).then((allCompany) => {
         if (allCompany.length < 1) {
           return res.status(200).json({
-            message: 'Sorry no compay matched your search'
+            message: 'Sorry no company matched your search'
           });
         }
         return res.status(200).json({

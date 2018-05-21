@@ -121,7 +121,7 @@ export default {
       address: 'required|string|min:6',
       email: 'required|email',
       regDate: 'required|date',
-      phoneNo: 'required|integer|min:11',
+      // phoneNo: 'required',
       siteAddress: 'required|string',
     };
 
