@@ -16,10 +16,6 @@ export default (sequelize, DataTypes) => {
       unique: true,
       validate: { isEmail: true }
     },
-    regDate: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
     phoneNo: {
       type: DataTypes.BIGINT,
       unique: true
