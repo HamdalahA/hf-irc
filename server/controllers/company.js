@@ -7,7 +7,7 @@ const { Op } = Sequelize;
 export default {
   registerCompany(req, res) {
     const {
-      name, address, email, regDate, phoneNo, siteAddress
+      name, address, email, regDate, phoneNo, siteAddress, contactPerson
     } = req.body;
     Company.findOne({
       where: {
@@ -27,7 +27,8 @@ export default {
           email,
           regDate,
           phoneNo,
-          siteAddress
+          siteAddress,
+          contactPerson
         }).then(newCompany => res.status(201).json({
           status: 200,
           message: `You have successfully registered ${name}`,

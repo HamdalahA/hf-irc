@@ -21,11 +21,15 @@ export default (sequelize, DataTypes) => {
       allowNull: false,
     },
     phoneNo: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.BIGINT,
       unique: true
     },
     siteAddress: {
-      type: DataTypes.TEXT
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    contactPerson: {
+      type: DataTypes.STRING
     }
   });
   company.associate = (models) => {

@@ -26,23 +26,28 @@ const routes = (app) => {
 
   app.post(
     `${baseUrl}/company/register`,
-    auth.Verify, validation.registerCompany, company.registerCompany
+    auth.Verify,
+    validation.registerCompany, company.registerCompany
   );
   app.get(
     `${baseUrl}/companies`,
-    auth.Verify, company.getAllCompanies
+    auth.Verify,
+    company.getAllCompanies
   );
   app.get(
     `${baseUrl}/company/:companyId`,
-    auth.Verify, company.getSingleCompany
+    auth.Verify,
+    company.getSingleCompany
   );
   app.delete(
     `${baseUrl}/company/:companyId`,
-    auth.Verify, company.deleteCompany
+    auth.Verify,
+    company.deleteCompany
   );
   app.put(
     `${baseUrl}/company/:companyId`,
-    auth.Verify, company.updateCompany
+    auth.Verify,
+    company.updateCompany
   );
 
   app.post(

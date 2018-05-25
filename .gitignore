@@ -1,5 +1,5 @@
 .env
 node_modules/*
-server/dist/
 .vscode/
 DS_Store/
+server/dist

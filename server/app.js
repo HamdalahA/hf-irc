@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 routes(app);
 
-app.use(express.static('server/'));
+app.use(express.static('build'));
 
 app.listen(port);
 console.log(`server has started on port: ${port}`);
