@@ -8,8 +8,6 @@ const htmlWebpackPlugin = new HtmlWebPackPlugin({
   inject: 'body'
 });
 
-const debug = process.env.NODE_ENV !== 'production';
-
 module.exports = {
   mode: 'none',
   entry: ['whatwg-fetch', './client/src/js/index.jsx'],
@@ -46,6 +44,13 @@ module.exports = {
           use: ['css-loader', 'sass-loader']
         })
       },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        use: [
+          'url-loader?limit=10000',
+          'img-loader'
+        ]
+      },
     ]
   },
   resolve: {
@@ -58,5 +63,14 @@ module.exports = {
       filename: 'bundle.css',
       allChunks: true
     }),
-  ]
+  ],
+  devServer: (process.env.NODE_ENV === 'development') ? {
+    proxy: {
+      '/api/v1': 'http://localhost:8000'
+    },
+    contentBase: path.resolve(__dirname, 'client/src'),
+    inline: true,
+    historyApiFallback: true,
+    hot: true
+  } : {},
 };

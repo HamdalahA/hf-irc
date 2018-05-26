@@ -1,3 +1,43 @@
 body {
-    background: #ccc;
+    padding: 0;
+    margin: 0;
+}
+
+.background {
+    background-image: url('../assets/img/blurry_blue_background-wallpaper-1024x576.jpg');
+    background-size: cover;
+    height: 900px;
+}
+
+.wrapper {
+    background: rgba(5, 45, 100, 0.655);
+    height: 100%;
+    padding-top: 10%;
+}
+
+.signin-form {
+    background: rgba(30, 29, 29, 0.616);
+    width: 70%;
+    margin: 0 auto;
+}
+
+
+#s-form {
+    width: 30%;
+    margin: 0 auto;    
+    padding: 1%;
+    background: #fff;
+
+}
+
+#s-from {
+    width: 100% !important;
+}
+
+.logo {
+    width: 40%;
+}
+
+.logo img {
+    width: 30%;
 }
