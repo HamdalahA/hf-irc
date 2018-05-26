@@ -1,18 +1,22 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const htmlWebpackPlugin = new HtmlWebPackPlugin({
   template: './client/src/index.html',
-  filename: './index.html'
+  filename: 'index.html',
+  inject: 'body'
 });
+
+const debug = process.env.NODE_ENV !== 'production';
 
 module.exports = {
   mode: 'none',
-  entry: ['whatwg-fetch', './client/src/js/indes.jsx'],
+  entry: ['whatwg-fetch', './client/src/js/index.jsx'],
   output: {
     path: path.resolve(__dirname, 'client/dist'),
     filename: 'bundle.js',
-    publicPath: ''
+    publicPath: '/'
   },
   module: {
     rules: [
@@ -36,21 +40,23 @@ module.exports = {
         }
       },
       {
-        test: /\.css$/,
-        use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader'
-          }
-        ]
-      }
+        test: /\.(css|scss)?$/,
+        use: ExtractTextPlugin.extract({
+          fallback: 'style-loader',
+          use: ['css-loader', 'sass-loader']
+        })
+      },
     ]
   },
   resolve: {
     modules: ['node_modules', 'client/src'],
     extensions: ['.js', '.jsx', '.json', '.css', '.scss']
   },
-  plugins: [htmlWebpackPlugin]
+  plugins: [
+    htmlWebpackPlugin,
+    new ExtractTextPlugin({
+      filename: 'bundle.css',
+      allChunks: true
+    }),
+  ]
 };
