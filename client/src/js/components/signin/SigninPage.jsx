@@ -15,6 +15,8 @@ import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import blue from '@material-ui/core/colors/blue';
 import { userSigninRequest } from '../../actions/user/signin';
 import validateSigninInput from '../../utils/validations/signin';
 
@@ -26,7 +28,15 @@ const styles = theme => ({
   },
   margin: {
     margin: theme.spacing.unit,
-  }
+  },
+  buttonProgress: {
+    color: blue[500],
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -12,
+    marginLeft: -12,
+  },
 });
 
 class SinginPage extends React.Component {
@@ -37,6 +47,7 @@ class SinginPage extends React.Component {
       identifier: '',
       password: '',
       errors: {},
+      isLoading: false,
       showPassword: false
     };
 
@@ -160,10 +171,15 @@ class SinginPage extends React.Component {
                     className={classes.button}
                     variant="raised"
                     type="submit"
+                    disabled={isLoading}
                     primary="true"
-                  >Singin
+                  >
+                    Singin
+                    {isLoading && <CircularProgress size={24} className={classes.buttonProgress} />}
+
                     <Lock className={classes.rightIcon} />
                   </Button>
+
                 </div>
               </form>
             </div>
