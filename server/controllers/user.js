@@ -76,7 +76,8 @@ export default {
           });
         }
         const token = jwt.sign({
-          id: userFound.id
+          id: userFound.id,
+          identifier: userFound.userName
         }, secret, { expiresIn: '48h' });
         return res.status(200)
           .json({

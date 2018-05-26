@@ -7,8 +7,9 @@ const htmlWebpackPlugin = new HtmlWebPackPlugin({
   filename: 'index.html',
   inject: 'body'
 });
-
+const debug = process.env.NODE_ENV !== 'production';
 module.exports = {
+  devtool: debug ? 'inline-sourcemap' : null,
   mode: 'none',
   entry: ['whatwg-fetch', './client/src/js/index.jsx'],
   output: {
@@ -64,13 +65,11 @@ module.exports = {
       allChunks: true
     }),
   ],
-  devServer: (process.env.NODE_ENV === 'development') ? {
+  devServer: debug ? {
     proxy: {
-      '/api/v1': 'http://localhost:8000'
+      '/api/v1': process.env.PORT || 'http://localhost:8000'
     },
-    contentBase: path.resolve(__dirname, 'client/src'),
-    inline: true,
-    historyApiFallback: true,
-    hot: true
+    hot: true,
+    historyApiFallback: true
   } : {},
 };
