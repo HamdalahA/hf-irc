@@ -1,18 +1,22 @@
 import React from 'react';
-import classNames from 'classnames';
+import { Redirect, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 import { withStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import Email from '@material-ui/icons/Email';
 import Lock from '@material-ui/icons/Lock';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import { userSigninRequest } from '../../actions/user/signin';
+import validateSigninInput from '../../utils/validations/signin';
 
 
 const styles = theme => ({
@@ -26,91 +30,161 @@ const styles = theme => ({
 });
 
 class SinginPage extends React.Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
-      amount: '',
+      open: false,
+      identifier: '',
       password: '',
-      weight: '',
-      weightRange: '',
-      showPassword: false,
-    }; 
+      errors: {},
+      showPassword: false
+    };
 
-    this.handleChange = this.handleChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleClickShowPassword = this.handleClickShowPassword.bind(this);
   }
 
-  handleChange = prop => event => {
-    this.setState({ [prop]: event.target.value });
-  };
-
-  handleMouseDownPassword = event => {
+  componentWillReceiveProps(nextProps) {
+    if (Object.keys(nextProps.serverError).length >= 1) {
+      this.setState({
+        isLoading: false,
+        open: true
+      });
+    } else {
+      this.setState({ redirect: true });
+    }
+  }
+  onSubmit(event) {
     event.preventDefault();
-  };
+    if (this.isValid()) {
+      this.setState({ errors: {}, isLoading: true });
+      this.props.userSigninRequest(this.state);
+    }
+  }
 
-  handleClickShowPassword = () => {
+  onChange(event) {
+    this.setState({ [event.target.name]: event.target.value });
+  }
+
+  isValid() {
+    const { errors, isValid } = validateSigninInput(this.state);
+
+    if (!isValid) {
+      this.setState({ errors });
+    }
+
+    return isValid;
+  }
+
+  handleClickShowPassword() {
     this.setState({ showPassword: !this.state.showPassword });
-  };
+  }
+  handleClose() {
+    this.setState({ open: false });
+  }
 
   render() {
-    const { classes } = this.props;
+    const { classes, serverError } = this.props;
+    const { errors, redirect, isLoading } = this.state;
+
+    if (redirect) {
+      return <Redirect to="/companies" />;
+    }
 
     return (
       <div className="background">
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          autoHideDuration={4000}
+          open={this.state.open}
+          onClose={this.handleClose}
+          ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message={<span id="message-id">{serverError.error}</span>}
+        />
         <div className="wrapper">
           <div className="signin-form">
             <div className={classes.root} id="s-form">
-              <h1 style={{textAlign: 'center', width: '100%'}}>Signin</h1> 
-              <form action="index.html">
-                <FormControl className={classes.margin} fullWidth={true}>
-                    <InputLabel htmlFor ="input-with-icon-adornment">Username/Email</InputLabel>
-                    <Input
-                      id="input-with-icon-adornment"
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <Email />
-                        </InputAdornment>
-                      }
-                    />
-                </FormControl>
-                
-                <FormControl className={classNames(classes.margin)} fullWidth={true}>
-                  <InputLabel htmlFor="adornment-password">Password</InputLabel>
+              <h1 style={{ textAlign: 'center', width: '100%' }}>Signin</h1>
+              <form onSubmit={this.onSubmit}>
+                <FormControl className={classes.margin} fullWidth>
+                  <InputLabel
+                    htmlFor="identifier"
+                  >Username/Email
+                  </InputLabel>
                   <Input
-                    id="adornment-password"
+                    id="identifier"
+                    value={this.state.identifier}
+                    onChange={this.onChange}
+                    name="identifier"
+                    endAdornment={
+                      <InputAdornment position="end">
+                        <Email />
+                      </InputAdornment>
+                      }
+                  />
+                  {errors.identifier && <span className="red-text">{errors.identifier}</span>}
+                </FormControl>
+
+                <FormControl className={classes.margin} fullWidth>
+                  <InputLabel htmlFor="password">Password</InputLabel>
+                  <Input
+                    id="password"
                     type={this.state.showPassword ? 'text' : 'password'}
+                    name="password"
                     value={this.state.password}
-                    onChange={this.handleChange('password')}
+                    onChange={this.onChange}
                     endAdornment={
                       <InputAdornment position="end">
                         <IconButton
                           aria-label="Toggle password visibility"
                           onClick={this.handleClickShowPassword}
-                          onMouseDown={this.handleMouseDownPassword}
                         >
                           {this.state.showPassword ? <VisibilityOff /> : <Visibility />}
                         </IconButton>
                       </InputAdornment>
-                    }
+                      }
                   />
+                  {errors.password && <span className="red-text">{errors.password}</span>}
                 </FormControl>
-                <br/>
-                <br/>
-                <br/>
-                <Button className={classes.button} variant="raised">
-                  Singin
-                  <Lock className={classes.rightIcon} />
-                </Button>
+
+                <br />
+                <br />
+                <br />
+                <div className="center">
+                  <Button
+                    style={{ textAlign: 'center' }}
+                    className={classes.button}
+                    variant="raised"
+                    type="submit"
+                    primary="true"
+                  >Singin
+                    <Lock className={classes.rightIcon} />
+                  </Button>
+                </div>
               </form>
             </div>
           </div>
         </div>
-      </div> 
+      </div>
     );
   }
 }
 
 SinginPage.propTypes = {
   classes: PropTypes.object.isRequired,
+  userSigninRequest: PropTypes.func.isRequired,
+  serverError: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(SinginPage);
+const mapStateToProps = state => ({
+  serverError: state.auth.error
+});
+
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, { userSigninRequest })
+)(SinginPage);
