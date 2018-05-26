@@ -1,6 +1,7 @@
 import React from 'react';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import Signin from './components/signin/SigninPage';
+import Company from './components/company/companyPage';
 
 const App = () => (
   <BrowserRouter>
@@ -10,6 +11,11 @@ const App = () => (
           path="/"
           exact
           component={Signin}
+        />
+        <Route
+          path="/companies"
+          exact
+          component={Company}
         />
       </Switch>
     </div>
