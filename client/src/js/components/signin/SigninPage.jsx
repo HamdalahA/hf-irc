@@ -108,7 +108,7 @@ class SinginPage extends React.Component {
         <div className="wrapper">
           <div className="signin-form">
             <div className={classes.root} id="s-form">
-              <h1 style={{ textAlign: 'center', width: '100%' }}>Signin</h1>
+              <h1 style={{ textAlign: 'center', width: '100%' }}>Sign In</h1>
               <form onSubmit={this.onSubmit}>
                 <FormControl className={classes.margin} fullWidth>
                   <InputLabel

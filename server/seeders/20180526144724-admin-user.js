@@ -5,7 +5,7 @@ const password = 'password';
 module.exports = {
   up: queryInterface =>
     queryInterface.bulkInsert('Users', [{
-      username: 'Admin',
+      userName: 'Admin',
       email: 'admin@localhost',
       password: bcrypt.hashSync(password, 10),
       createdAt: new Date(),

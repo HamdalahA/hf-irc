@@ -9,7 +9,6 @@ const htmlWebpackPlugin = new HtmlWebPackPlugin({
 });
 const debug = process.env.NODE_ENV !== 'production';
 module.exports = {
-  devtool: debug ? 'inline-sourcemap' : null,
   mode: 'none',
   entry: ['whatwg-fetch', './client/src/js/index.jsx'],
   output: {
