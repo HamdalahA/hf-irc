@@ -13,7 +13,7 @@ export default {
 
     Certificate.findOne({
       where: {
-        [Op.or]: [
+        [Op.and]: [
           { companyId },
           { refNo }
         ]

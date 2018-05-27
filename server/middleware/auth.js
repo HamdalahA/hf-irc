@@ -3,7 +3,7 @@ import dotnev from 'dotenv';
 
 dotnev.config();
 
-const key = process.env.SECRET_KEY;
+const key = process.env.SECRETKEY;
 
 const authenticate = {
   Verify: (req, res, next) => {

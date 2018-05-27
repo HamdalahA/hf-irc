@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import compose from 'recompose/compose';
@@ -191,9 +191,9 @@ class SinginPage extends React.Component {
 }
 
 SinginPage.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   userSigninRequest: PropTypes.func.isRequired,
-  serverError: PropTypes.object.isRequired
+  serverError: PropTypes.object.isRequired // eslint-disable-line react/forbid-prop-types
 };
 
 const mapStateToProps = state => ({

@@ -52,3 +52,58 @@ body {
     color: red;
     text-align: center;
 }
+
+.container {
+    padding: 1%;
+    width: 98%; }
+  
+.left {
+    width: 45%;
+    float: left;
+}
+  
+.top {
+    padding: 1%; 
+    width: 60%;
+    margin: 0% auto;
+}
+
+.top table {
+    width: 100%;
+}
+
+.top table td {
+    padding: 3%;  
+    border-bottom: 1px solid;
+}
+
+.top th {
+    text-align: right;
+    border-bottom: 1px solid;
+}
+
+.bottom {
+    padding: 1%;
+}
+  
+.right {
+    width: 53%;
+    padding: 1%;
+    float: right;
+}
+
+.head {
+    width: 50%;
+    float: left;
+}
+
+.button {
+    width: 40%;
+    float: right;
+    padding: 3%;
+    text-align: right;
+}
+
+.clear {
+    clear: both;
+}

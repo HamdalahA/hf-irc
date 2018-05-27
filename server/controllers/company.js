@@ -7,7 +7,7 @@ const { Op } = Sequelize;
 export default {
   registerCompany(req, res) {
     const {
-      name, address, email, regDate, phoneNo, siteAddress, contactPerson
+      name, address, email, phoneNo, siteAddress, contactPerson
     } = req.body;
     Company.findOne({
       where: {
@@ -25,7 +25,6 @@ export default {
           name,
           address,
           email,
-          regDate,
           phoneNo,
           siteAddress,
           contactPerson
