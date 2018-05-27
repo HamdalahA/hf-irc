@@ -32,7 +32,6 @@ class SingleCompany extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log('Props', nextProps.companyDetails.company);
     this.setState({
       products: nextProps.companyDetails.company.Products, // eslint-disable-line
       certificate: nextProps.companyDetails.company.Certificates, // eslint-disable-line
