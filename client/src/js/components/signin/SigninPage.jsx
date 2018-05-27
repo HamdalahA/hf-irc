@@ -39,7 +39,7 @@ const styles = theme => ({
   },
 });
 
-class SinginPage extends React.Component {
+class SigninPage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -174,7 +174,7 @@ class SinginPage extends React.Component {
                     disabled={isLoading}
                     primary="true"
                   >
-                    Singin
+                    Signin
                     {isLoading && <CircularProgress size={24} className={classes.buttonProgress} />}
 
                     <Lock className={classes.rightIcon} />
@@ -190,7 +190,7 @@ class SinginPage extends React.Component {
   }
 }
 
-SinginPage.propTypes = {
+SigninPage.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
   userSigninRequest: PropTypes.func.isRequired,
   serverError: PropTypes.object.isRequired // eslint-disable-line react/forbid-prop-types
@@ -203,4 +203,4 @@ const mapStateToProps = state => ({
 export default compose(
   withStyles(styles),
   connect(mapStateToProps, { userSigninRequest })
-)(SinginPage);
+)(SigninPage);

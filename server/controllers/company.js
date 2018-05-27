@@ -106,7 +106,7 @@ export default {
   },
   updateCompany(req, res) {
     const {
-      name, address, regDate, phoneNo, siteAddress
+      name, address, phoneNo, siteAddress
     } = req.body;
 
     Company.find({
@@ -122,7 +122,6 @@ export default {
       return companyFound.update({
         company_name: name || companyFound.name,
         company_address: address || companyFound.address,
-        registration_date: regDate || companyFound.regDate,
         phone_no: phoneNo || companyFound.phoneNo,
         siteAddress: siteAddress || companyFound.siteAddress
       }).then(updatedCompany => res.status(200).json({

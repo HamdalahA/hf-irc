@@ -1,10 +1,10 @@
 import { combineReducers } from 'redux';
 import auth from './auth';
-import { companyDetails } from './company';
+import company from './company';
 
 const rootReducer = combineReducers({
   auth,
-  companyDetails
+  company
 });
 
 export default rootReducer;
