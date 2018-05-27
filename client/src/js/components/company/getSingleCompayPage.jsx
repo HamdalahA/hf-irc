@@ -32,10 +32,11 @@ class SingleCompany extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log('Props', nextProps.companyDetails.company);
     this.setState({
-      products: nextProps.companyDetails.Products, // eslint-disable-line
-      certificate: nextProps.companyDetails.Certificates, // eslint-disable-line
-      companyDetails: nextProps.companyDetails
+      products: nextProps.companyDetails.company.Products, // eslint-disable-line
+      certificate: nextProps.companyDetails.company.Certificates, // eslint-disable-line
+      companyDetails: nextProps.companyDetails.company
     });
   }
 
@@ -116,7 +117,7 @@ SingleCompany.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  companyDetails: state.companyDetails.company
+  companyDetails: state.company
 });
 
 export default connect(mapStateToProps, { getSingleCompany })(SingleCompany);
