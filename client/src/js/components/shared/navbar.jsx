@@ -5,6 +5,8 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import { addCompanyRequest } from '../../actions/company/companies';
+import AddCompanyModal from '../shared/AddCompanyModal';
 
 const styles = {
   root: {
@@ -25,8 +27,17 @@ class ButtonAppBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      modal: false,
     };
+    this.toggle = this.toggle.bind(this);
   }
+
+  toggle() {
+    this.setState({
+      modal: !this.state.modal
+    });
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -41,7 +52,11 @@ class ButtonAppBar extends React.Component {
             <Typography variant="title" color="inherit" className={classes.flex}>
             Halal Food IRS
             </Typography>
-            <Button color="inherit">Add Company</Button>
+            <AddCompanyModal
+              addCompany={this.props.addCompany}
+              isOpen={this.state.modal}
+             toggle={this.toggle}
+            />
           </Toolbar>
         </AppBar>
       </div>

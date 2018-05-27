@@ -104,14 +104,13 @@ export default {
 
   registerCompany(req, res, next) {
     const {
-      name, address, email, regDate, phoneNo, siteAddress
+      name, address, email, phoneNo, siteAddress
     } = req.body;
 
     const userData = {
       name,
       address,
       email,
-      regDate,
       phoneNo,
       siteAddress
     };
@@ -120,8 +119,6 @@ export default {
       name: 'required|string:min:3',
       address: 'required|string|min:6',
       email: 'required|email',
-      regDate: 'required|date',
-      // phoneNo: 'required',
       siteAddress: 'required|string',
     };
 
