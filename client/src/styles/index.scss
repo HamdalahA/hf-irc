@@ -3,6 +3,10 @@ body {
     margin: 0;
 }
 
+a {
+    text-decoration: none;
+}
+
 .background {
     background-image: url('../assets/img/blurry_blue_background-wallpaper-1024x576.jpg');
     background-size: cover;
@@ -37,6 +41,7 @@ body {
 .logo {
     width: 7%;
     height: 7%;
+    margin-left: -16px;
 }
 
 .logo img {

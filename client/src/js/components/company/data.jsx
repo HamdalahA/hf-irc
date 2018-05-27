@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 import DeleteButton from '../shared/DeleteButton';
 import EditButton from '../shared/EditButton';
 import ViewButton from '../shared/ViewButton';
@@ -72,16 +73,88 @@ export const certificateColumns = [
   }
 ];
 
+// <Link to={`/recipe-by/${username}/${userId}`}>{username}</Link>
+export const companiesColumns = [
+  {
+    name: 'Name',
+    options: {
+      filter: true,
+      sort: true,
+    }
+  },
+  {
+    name: 'Email',
+    options: {
+      filter: true,
+      sort: true,
+    }
+  },
+  {
+    name: 'Site Address',
+    options: {
+      filter: true,
+      sort: true,
+    }
+  },
+  {
+    name: 'Phone Number',
+    options: {
+      filter: true,
+      sort: true,
+    }
+  },
+  {
+    name: 'View',
+    options: {
+      filter: true,
+      sort: true,
+      customRender: (index, value) => ( // eslint-disable-line
+        <Link to={`/company/${value}`}>
+          <ViewButton />
+        </Link>
+      )
+    }
+  },
+  {
+    name: 'Edit',
+    options: {
+      filter: true,
+      sort: true,
+      customRender: index => ( // eslint-disable-line
+        <EditButton />
+      )
+    }
+  },
+  {
+    name: 'Delete',
+    options: {
+      filter: true,
+      sort: true,
+      customRender: index => ( // eslint-disable-line
+        <DeleteButton /> // eslint-disable-line
+      )
+    }
+  },
+];
+
 export const productOptions = {
   filterType: 'dropdown',
   responsive: 'stacked',
-  rowsPerPageOptions: [5, 10, 15]
+  rowsPerPageOptions: [5, 10, 15],
+  selectableRows: false
 };
 
+export const companiesOptions = {
+  filterType: 'dropdown',
+  responsive: 'stacked',
+  rowsPerPageOptions: [5, 10, 15],
+  selectableRows: false
+};
 
 export const certificateOptions = {
   filterType: 'dropdown',
   responsive: 'stacked',
   rowsPerPageOptions: [5, 10, 15],
-  rowsPerPage: 5
+  rowsPerPage: 5,
+  selectableRows: false
 };
