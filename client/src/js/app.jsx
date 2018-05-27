@@ -1,7 +1,8 @@
 import React from 'react';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import Signin from './components/signin/SigninPage';
-import Company from './components/company/companyPage';
+import CompayPage from './components/company/companyPage';
+import SingleCompany from './components/company/getSingleCompayPage';
 
 const App = () => (
   <BrowserRouter>
@@ -13,9 +14,14 @@ const App = () => (
           component={Signin}
         />
         <Route
+          path="/company/:companyId"
+          exact
+          component={SingleCompany}
+        />
+        <Route
           path="/companies"
           exact
-          component={Company}
+          component={CompayPage}
         />
       </Switch>
     </div>

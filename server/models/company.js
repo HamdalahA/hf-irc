@@ -32,7 +32,7 @@ export default (sequelize, DataTypes) => {
     company.hasMany(models.Product, {
       foreignKey: 'companyId',
     });
-    company.hasOne(models.Certificate, {
+    company.hasMany(models.Certificate, {
       foreignKey: 'companyId',
     });
     company.hasOne(models.Contact, {

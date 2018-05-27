@@ -119,6 +119,7 @@ export default {
       name: 'required|string:min:3',
       address: 'required|string|min:6',
       email: 'required|email',
+      phoneNo: 'required',
       siteAddress: 'required|string',
     };
 
