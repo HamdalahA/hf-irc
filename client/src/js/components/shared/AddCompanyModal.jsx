@@ -31,6 +31,9 @@ const styles = theme => ({
     boxShadow: theme.shadows[5],
     padding: theme.spacing.unit * 4,
   },
+  color: {
+    color: 'white'
+  }
 });
 
 class AddCompanyModal extends React.Component {
@@ -154,7 +157,7 @@ class AddCompanyModal extends React.Component {
         { success ? snackBarFunc(successMessage) : null }
         {err ? snackBarFunc(error) : null}
 
-        <Button onClick={this.handleOpen} className="comp-title">Add Company</Button>
+        <Button onClick={this.handleOpen} variant="outlined" className={classes.color}>Add Company</Button>
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"

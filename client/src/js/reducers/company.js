@@ -6,7 +6,9 @@ import {
   ADD_COMPANY_SUCCESS,
   ADD_COMPANY_FAILURE,
   GET_COMPANY_SUCCESS,
-  GET_COMPANY_FAILURE
+  GET_COMPANY_FAILURE,
+  EDIT_COMPANY_SUCESS,
+  EDIT_COMPANY_SUCESS_FAILURE
 } from '../actions/types';
 
 const initialState = {
@@ -67,6 +69,7 @@ export default (state = initialState, action) => {
         ...newState,
         error: {},
         addSuccess: false,
+        isLoading: false,
         company: { ...newState.company, ...companyDetail }
       };
       return ren;
@@ -75,6 +78,12 @@ export default (state = initialState, action) => {
         ...newState,
         error
       };
+    case EDIT_COMPANY_SUCESS:
+      const { updatedCompany } = payload;
+      const index = newState.companies
+        .findIndex(compy => compy.id === updatedCompany.id);
+      newState.companies.splice(index, 1, updatedCompany);
+      return newState;
     default: return newState;
   }
 };

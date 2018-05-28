@@ -102,7 +102,7 @@ export default {
   },
   updateCompany(req, res) {
     const {
-      name, address, phoneNo, siteAddress
+      name, address, email, phoneNo, siteAddress, contactPerson
     } = req.body;
 
     Company.find({
@@ -115,11 +115,14 @@ export default {
           error: 'Company not registered'
         });
       }
+
       return companyFound.update({
-        company_name: name || companyFound.name,
-        company_address: address || companyFound.address,
-        phone_no: phoneNo || companyFound.phoneNo,
-        siteAddress: siteAddress || companyFound.siteAddress
+        name: name || companyFound.name,
+        email: email || companyFound.email,
+        address: address || companyFound.address,
+        phoneNo: phoneNo || companyFound.phoneNo,
+        siteAddress: siteAddress || companyFound.siteAddress,
+        contactPerson: contactPerson || companyFound.contactPerson
       }).then(updatedCompany => res.status(200).json({
         updatedCompany
       }));

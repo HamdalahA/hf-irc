@@ -23,7 +23,7 @@ function IconLabelButtons(props) {
       <Button
         className={classes.button}
         size="small"
-        variant="raised"
+        variant="outlined"
         color="primary"
       >
         <Add />
