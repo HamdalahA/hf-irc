@@ -7,6 +7,8 @@ import CompanyInfo from './partials/companyInfo';
 import Table from '../shared/Table';
 import { getSingleCompany } from '../../actions/company/getSingleCompany';
 import AddButton from '../shared/AddButton';
+import AddCertificateModal from '../shared/AddCertificateModal';
+import { addCertificateRequest } from '../../actions/certificate';
 
 import {
   productColumns,
@@ -22,8 +24,10 @@ class SingleCompany extends Component {
       companyDetails: {},
       products: [],
       certificate: [],
-      isLoading: false // eslint-disable-line
-    };
+      isLoading: false,
+      modal: false,
+    }
+    this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount() {
@@ -36,6 +40,12 @@ class SingleCompany extends Component {
       products: nextProps.companyDetails.company.Products, // eslint-disable-line
       certificate: nextProps.companyDetails.company.Certificates, // eslint-disable-line
       companyDetails: nextProps.companyDetails.company
+    });
+  }
+
+  toggle() {
+    this.setState({
+      modal: !this.state.modal
     });
   }
 
@@ -67,7 +77,13 @@ class SingleCompany extends Component {
             <div className="bottom">
               <div>
                 <div className="head"><h2>Certificate List</h2></div>
-                <div className="button"><AddButton /></div>
+
+                  <AddCertificateModal
+                  isOpen={this.state.modal}
+                  toggle={this.toggle}
+                  companyId={this.props.match.params.companyId}
+                  addCertificate={this.props.addCertificateRequest}
+                  />
                 <div className="clear" />
 
               </div>
@@ -102,7 +118,6 @@ class SingleCompany extends Component {
               />
             }
 
-            {/* <X data={productListData} /> */}
           </div>
           <div className="clear" />
         </div>
@@ -112,11 +127,13 @@ class SingleCompany extends Component {
 }
 
 SingleCompany.propTypes = {
-  getSingleCompany: PropTypes.func.isRequired
+  getSingleCompany: PropTypes.func.isRequired,
+  addCertificateRequest: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = state => ({
-  companyDetails: state.company
+  companyDetails: state.company,
+  // certificate: state.company.company.Certificates
 });
 
-export default connect(mapStateToProps, { getSingleCompany })(SingleCompany);
+export default connect(mapStateToProps, { getSingleCompany, addCertificateRequest })(SingleCompany);

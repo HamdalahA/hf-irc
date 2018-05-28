@@ -8,12 +8,15 @@ import {
   GET_COMPANY_SUCCESS,
   GET_COMPANY_FAILURE,
   EDIT_COMPANY_SUCESS,
-  EDIT_COMPANY_SUCESS_FAILURE
+  EDIT_COMPANY_SUCESS_FAILURE,
+  ADD_CERTIFICATE_SUCCESS,
+  ADD_CERTIFICATE_FAILURE,
 } from '../actions/types';
 
 const initialState = {
   companies: [],
   company: {},
+  // certificates: [],
   isLoadingCompanies: false,
   successMessage: '',
   errorMessage: '',
@@ -23,7 +26,7 @@ const initialState = {
 export default (state = initialState, action) => {
   const newState = cloneDeep(state);
   const {
-    type, companies, company, payload, error
+    type, companies, company, payload, error, certificateData
   } = action;
   switch (type) {
     case GET_COMPANIES:
@@ -83,6 +86,12 @@ export default (state = initialState, action) => {
       const index = newState.companies
         .findIndex(compy => compy.id === updatedCompany.id);
       newState.companies.splice(index, 1, updatedCompany);
+
+    case ADD_CERTIFICATE_SUCCESS:
+      const or = {
+        ...newState.company.Certificates.push(certificateData),
+        addSuccess: true,
+      }
       return newState;
     default: return newState;
   }

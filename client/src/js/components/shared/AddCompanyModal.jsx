@@ -115,9 +115,7 @@ class AddCompanyModal extends React.Component {
       err: false
     });
     this.props.addCompanyRequest(this.state).then((x) => {
-      console.log('its fine', x);
     }, (err) => {
-      console.log('its not fine ');
     });
   }
 
