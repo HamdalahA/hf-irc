@@ -17,7 +17,7 @@ const styles = theme => ({
 });
 
 function IconLabelButtons(props) {
-  const { classes } = props;
+  const { classes, onClick } = props;
   return (
     <div>
       <Button
@@ -25,6 +25,7 @@ function IconLabelButtons(props) {
         size="small"
         variant="outlined"
         color="primary"
+        onClick={() => onClick()}
       >
         <Add />
       </Button>

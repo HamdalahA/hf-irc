@@ -36,7 +36,6 @@ export default {
         certificate
       }));
     }).catch((error) => {
-      console.log('Certificate error >>', error);
       return res.status(500).json({
         error: 'Opps, something terible happend!'
       });

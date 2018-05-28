@@ -52,8 +52,8 @@ class ButtonAppBar extends React.Component {
               src={logo}
               alt="Card cap"
             />
-            <Typography variant="title" color="inherit" className={classes.flex}>
-            Halal Food IRS
+            <Typography variant="title" color="inherit" className={classes.flex} id="mv-title">
+            Halal Food Authority Internal Record System
             </Typography>
             {
               location.pathname === '/companies' ?
