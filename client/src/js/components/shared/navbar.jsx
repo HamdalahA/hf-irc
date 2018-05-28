@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import { addCompanyRequest } from '../../actions/company/companies';
 import AddCompanyModal from '../shared/AddCompanyModal';
 
 const styles = {
@@ -22,6 +22,8 @@ const styles = {
 };
 
 const logo = require('../../../assets/img/logo.jpg');
+
+console.log(location.pathname);
 
 class ButtonAppBar extends React.Component {
   constructor(props) {
@@ -52,11 +54,21 @@ class ButtonAppBar extends React.Component {
             <Typography variant="title" color="inherit" className={classes.flex}>
             Halal Food IRS
             </Typography>
-            <AddCompanyModal
-              addCompany={this.props.addCompany}
-              isOpen={this.state.modal}
-             toggle={this.toggle}
-            />
+            {
+              location.pathname === '/companies' ?
+                <AddCompanyModal
+                  addCompany={this.props.addCompany}
+                  isOpen={this.state.modal}
+                  toggle={this.toggle}
+                />
+          :
+                <Link to="/companies">
+                  <Button
+                    className="comp-title"
+                  >Veiw Companies
+                  </Button>
+                </Link>
+          }
           </Toolbar>
         </AppBar>
       </div>

@@ -56,7 +56,7 @@ export const getCompaniesRequest = (page, limit, sort) =>
       };
       dispatch(getCompaniesSuccess(paginated));
     }).catch((error) => {
-      dispatch(getCompaniesFailure(error.response));
+      dispatch(getCompaniesFailure(error.response.data));
     });
     return request;
   };
@@ -66,5 +66,5 @@ export const addCompanyRequest = companyData => dispatch =>
     .then((response) => {
       dispatch(addCompanySuccess(response.data));
     }).catch((error) => {
-      dispatch(addCompanyFailure(error.response));
+      dispatch(addCompanyFailure(error.response.data));
     });

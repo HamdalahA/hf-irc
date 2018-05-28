@@ -15,7 +15,7 @@ const initialState = {
   isLoadingCompanies: false,
   successMessage: '',
   errorMessage: '',
-  error: {}
+  error: {},
 };
 
 export default (state = initialState, action) => {
@@ -34,7 +34,8 @@ export default (state = initialState, action) => {
       newState.pageCount = companies.pageCount;
       newState.isLoadingCompanies = false;
       return {
-        ...newState
+        ...newState,
+        error: {}
       };
     case GET_COMPANIES_FAILURE:
       return {
@@ -43,22 +44,35 @@ export default (state = initialState, action) => {
         isLoadingCompanies: false
       };
     case ADD_COMPANY_SUCCESS:
-      return {
+
+      const rx = {
         ...newState,
+        addSuccess: true,
+        successMessage: company.message,
+        error: {},
         companies: [...newState.companies, company.company]
       };
+
+      return rx;
     case ADD_COMPANY_FAILURE:
-      return {
+      const r = {
         ...newState,
-        isLoadingCompanies: false
+        isLoadingCompanies: false,
+        error: { ...newState.error, ...error }
       };
+      return r;
     case GET_COMPANY_SUCCESS:
       const { companyDetail } = payload;
-      return {
-        ...newState, company: { ...newState.company, ...companyDetail }
+      const ren = {
+        ...newState,
+        error: {},
+        addSuccess: false,
+        company: { ...newState.company, ...companyDetail }
       };
+      return ren;
     case GET_COMPANY_FAILURE:
       return {
+        ...newState,
         error
       };
     default: return newState;

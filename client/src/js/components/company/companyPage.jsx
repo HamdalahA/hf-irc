@@ -63,9 +63,8 @@ class CompanyPage extends React.Component {
     const { companies, isLoadingCompanies } = this.state;
 
     const data = companies.map(item => [
-      item.name, item.email, item.siteAddress, item.phoneNo, item.id, item.id, item.id,
+      item.name, item.email, item.siteAddress, item.phoneNo, item.id, item.id, item.id
     ]);
-    console.log('data', data);
     return (
       <Paper className={classes.root}>
         <ButtonAppBar

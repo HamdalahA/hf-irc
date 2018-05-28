@@ -13,8 +13,7 @@ module.exports = {
     },
     address: {
       type: Sequelize.TEXT,
-      allowNull: false,
-      unique: true
+      allowNull: false
     },
     email: {
       type: Sequelize.STRING,
