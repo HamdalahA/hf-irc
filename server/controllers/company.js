@@ -18,7 +18,7 @@ export default {
         if (companyFound) {
           return res.status(409).json({
             status: 409,
-            error: 'company already registered'
+            error: 'Company already registered'
           });
         }
         return Company.create({
@@ -56,8 +56,6 @@ export default {
 
       Company.findAndCountAll({
         order: [sort],
-        limit: limitValue,
-        offset: pageValue * limitValue,
         where: {
           [Op.or]: name.concat(email)
         }
@@ -78,8 +76,6 @@ export default {
     } else {
       Company.findAndCountAll({
         order: [sort],
-        limit: limitValue,
-        offset: pageValue * limitValue
       }).then(allCompany => res.status(200).json({
         page: (pageValue + 1),
         totalCount: allCompany.count,

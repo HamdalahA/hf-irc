@@ -1,15 +1,19 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import compose from 'recompose/compose';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import Modal from '@material-ui/core/Modal';
 import Button from '@material-ui/core/Button';
 import FormControl from '@material-ui/core/FormControl';
 import Input from '@material-ui/core/Input';
+import Snackbar from '@material-ui/core/Snackbar';
 import InputLabel from '@material-ui/core/InputLabel';
+import { addCompanyRequest } from '../../actions/company/companies';
+
 
 function getModalStyle() {
-  const top = 50;
+  const top = 60;
   const left = 80;
 
   return {
@@ -30,31 +34,69 @@ const styles = theme => ({
 });
 
 class AddCompanyModal extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      modal: false,
+      snackBar: false,
+      name: '',
+      email: '',
+      address: '',
+      phoneNo: '',
+      contactPerson: '',
+      siteAddress: '',
+      isLoading: false,
+      error: {},
+      success: false,
+      successMessage: '',
+      message: '',
+      err: false
+    };
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.handleClose = this.handleClose.bind(this);
+    this.handleOpen = this.handleOpen.bind(this);
+    this.handleSnakBarClose = this.handleSnakBarClose.bind(this);
+  }
 
-    constructor(props) {
-        super(props);
-        this.state = {
-          open: false,
-          name: '',
-          email: '',
-          address: '',
-          phoneNo: '',
-          contactPerson: '',
-          siteAddress: '',
-          isLoading: false,
-          error: false,
-        };
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
- 
+  componentWillMount() {
+    this.setState({
+      error: {},
+      err: false,
+      success: false,
+      successMessage: '',
+    });
+  }
+  componentWillReceiveProps(nextProps) {
+    if (Object.keys(nextProps.error).length > 0 && nextProps.error.error !== undefined) {
+      this.setState({
+        err: true,
+        success: false,
+        successMessage: '',
+        error: nextProps.error.error,
+        snackBar: true
+      });
+      this.handleOpen();
+      return this;
     }
-  handleOpen = () => {
-    this.setState({ open: true });
-  };
 
-  handleClose = () => {
-    this.setState({ open: false });
-  };
+    if (nextProps.addSuccess) {
+      this.setState({
+        err: false,
+        success: nextProps.addSuccess,
+        successMessage: nextProps.successMessage,
+        snackBar: true,
+        name: '',
+        email: '',
+        address: '',
+        phoneNo: '',
+        contactPerson: '',
+        siteAddress: '',
+        error: {}
+      });
+      this.handleClose();
+    }
+  }
 
   onChange(event) {
     this.setState({ [event.target.name]: event.target.value });
@@ -62,108 +104,150 @@ class AddCompanyModal extends React.Component {
 
   onSubmit(event) {
     event.preventDefault();
-      this.props.addCompany(this.state);
-    }
+    this.setState({
+      error: {},
+      isLoading: true,
+      successMessage: '',
+      success: false,
+      err: false
+    });
+    this.props.addCompanyRequest(this.state).then((x) => {
+      console.log('its fine', x);
+    }, (err) => {
+      console.log('its not fine ');
+    });
+  }
+
+  handleOpen() {
+    this.setState({ modal: true });
+  }
+
+  handleClose() {
+    this.setState({ modal: false });
+  }
+
+  handleSnakBarClose() {
+    this.setState({ snackBar: false, success: false, successMessage: '' });
+  }
 
   render() {
     const { classes } = this.props;
+    const {
+      error, err, success, successMessage
+    } = this.state;
+
+    const snackBarFunc = msg => (
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        autoHideDuration={4000}
+        open={this.state.snackBar}
+        onClose={this.handleSnakBarClose}
+        ContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+        message={<span id="message-id">{msg}</span>}
+      />
+    );
 
     return (
       <div>
+        { success ? snackBarFunc(successMessage) : null }
+        {err ? snackBarFunc(error) : null}
+
         <Button onClick={this.handleOpen} className="comp-title">Add Company</Button>
         <Modal
           aria-labelledby="simple-modal-title"
           aria-describedby="simple-modal-description"
-          open={this.state.open}
+          open={this.state.modal}
           onClose={this.handleClose}
         >
           <div style={getModalStyle()} className={classes.paper}>
-          <div className="add-company-form">
-            <div className={classes.root}>
-              <h4 style={{ textAlign: 'center', width: '70%' }}>Register Company</h4>
-              <form onSubmit={this.onSubmit}>
-                <FormControl className={classes.margin} fullWidth>
-                  <InputLabel
-                    htmlFor="name"
-                  >Company Name
-                  </InputLabel>
-                  <Input
-                    id="name"
-                    value={this.state.name}
-                    onChange={this.onChange}
-                    name="name"
-                  />
-                </FormControl>
+            <div className="add-company-form">
+              <div className={classes.root}>
+                <h4 style={{ textAlign: 'center', width: '70%' }}>Register Company</h4>
+                <form onSubmit={this.onSubmit}>
+                  <FormControl className={classes.margin} fullWidth>
+                    <InputLabel
+                      htmlFor="name"
+                    >Company Name
+                    </InputLabel>
+                    <Input
+                      id="name"
+                      value={this.state.name}
+                      onChange={this.onChange}
+                      name="name"
+                    />
+                  </FormControl>
 
-                <FormControl className={classes.margin} fullWidth>
-                  <InputLabel htmlFor="address">Address</InputLabel>
-                  <Input
-                    id="address"
-                    name="address"
-                    value={this.state.address}
-                    onChange={this.onChange}
-                  />
+                  <FormControl className={classes.margin} fullWidth>
+                    <InputLabel htmlFor="address">Address</InputLabel>
+                    <Input
+                      id="address"
+                      name="address"
+                      value={this.state.address}
+                      onChange={this.onChange}
+                    />
 
-                </FormControl>
-                <FormControl className={classes.margin} fullWidth>
-                  <InputLabel htmlFor="email">Email</InputLabel>
-                  <Input
-                    id="email"
-                    name="email"
-                    value={this.state.email}
-                    onChange={this.onChange}
-                  />
+                  </FormControl>
+                  <FormControl className={classes.margin} fullWidth>
+                    <InputLabel htmlFor="email">Email</InputLabel>
+                    <Input
+                      id="email"
+                      name="email"
+                      value={this.state.email}
+                      onChange={this.onChange}
+                    />
 
-                </FormControl>
+                  </FormControl>
 
-                <FormControl className={classes.margin} fullWidth>
-                  <InputLabel htmlFor="phoneNo">Phone No</InputLabel>
-                  <Input
-                    id="phoneNo"
-                    name="phoneNo"
-                    value={this.state.phoneNo}
-                    onChange={this.onChange}
-                  />
-                </FormControl>
+                  <FormControl className={classes.margin} fullWidth>
+                    <InputLabel htmlFor="phoneNo">Phone No</InputLabel>
+                    <Input
+                      id="phoneNo"
+                      name="phoneNo"
+                      value={this.state.phoneNo}
+                      onChange={this.onChange}
+                    />
+                  </FormControl>
 
-                <FormControl className={classes.margin} fullWidth>
-                  <InputLabel htmlFor="contact">Contact Person</InputLabel>
-                  <Input
-                    id="contactPerson"
-                    name="contactPerson"
-                    value={this.state.contactPerson}
-                    onChange={this.onChange}
-                  />
-                </FormControl>
+                  <FormControl className={classes.margin} fullWidth>
+                    <InputLabel htmlFor="contact">Contact Person</InputLabel>
+                    <Input
+                      id="contactPerson"
+                      name="contactPerson"
+                      value={this.state.contactPerson}
+                      onChange={this.onChange}
+                    />
+                  </FormControl>
 
-                <FormControl className={classes.margin} fullWidth>
-                  <InputLabel htmlFor="address">Site Address</InputLabel>
-                  <Input
-                    id="siteAddress"
-                    name="siteAddress"
-                    value={this.state.siteAddress}
-                    onChange={this.onChange}
-                  />
-                </FormControl>
+                  <FormControl className={classes.margin} fullWidth>
+                    <InputLabel htmlFor="address">Site Address</InputLabel>
+                    <Input
+                      id="siteAddress"
+                      name="siteAddress"
+                      value={this.state.siteAddress}
+                      onChange={this.onChange}
+                    />
+                  </FormControl>
 
-                <br />
-                <br />
-                <br />
-                <div className="center">
-                  <Button
-                    style={{ textAlign: 'center' }}
-                    className={classes.button}
-                    variant="raised"
-                    type="submit"
-                    primary="true"
-                  >
+                  <br />
+                  <br />
+                  <br />
+                  <div className="center">
+                    <Button
+                      style={{ textAlign: 'center' }}
+                      className={classes.button}
+                      variant="raised"
+                      type="submit"
+                      primary="true"
+                    >
                     Register
-                  </Button>
+                    </Button>
 
-                </div>
-              </form>
+                  </div>
+                </form>
+              </div>
             </div>
-          </div>
           </div>
         </Modal>
       </div>
@@ -172,10 +256,20 @@ class AddCompanyModal extends React.Component {
 }
 
 AddCompanyModal.propTypes = {
-  addCompany: PropTypes.func.isRequired,
+  addCompanyRequest: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   toggle: PropTypes.func.isRequired,
   isOpen: PropTypes.bool.isRequired,
 };
 
-export default withStyles(styles)(AddCompanyModal);
+const mapStateToProps = state => ({
+  isLoadingCompanies: state.company.isLoadingCompanies,
+  error: state.company.error,
+  addSuccess: state.company.addSuccess,
+  successMessage: state.company.successMessage
+});
+
+export default compose(
+  withStyles(styles),
+  connect(mapStateToProps, { addCompanyRequest })
+)(AddCompanyModal);

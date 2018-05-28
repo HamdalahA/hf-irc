@@ -73,7 +73,6 @@ export const certificateColumns = [
   }
 ];
 
-// <Link to={`/recipe-by/${username}/${userId}`}>{username}</Link>
 export const companiesColumns = [
   {
     name: 'Name',
@@ -140,21 +139,21 @@ export const companiesColumns = [
 export const productOptions = {
   filterType: 'dropdown',
   responsive: 'stacked',
-  rowsPerPageOptions: [5, 10, 15],
+  rowsPerPageOptions: [10, 15, 30],
   selectableRows: false
 };
 
 export const companiesOptions = {
   filterType: 'dropdown',
   responsive: 'stacked',
-  rowsPerPageOptions: [5, 10, 15],
+  // rowsPerPageOptions: [10, 20, 30],
   selectableRows: false
 };
 
 export const certificateOptions = {
   filterType: 'dropdown',
   responsive: 'stacked',
-  rowsPerPageOptions: [5, 10, 15],
+  rowsPerPageOptions: [10, 20, 30],
   rowsPerPage: 5,
   selectableRows: false
 };
