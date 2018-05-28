@@ -17,7 +17,7 @@ const styles = theme => ({
 });
 
 function IconLabelButtons(props) {
-  const { classes } = props;
+  const { classes, onClick } = props;
   return (
     <div>
       <Button
@@ -25,6 +25,7 @@ function IconLabelButtons(props) {
         size="small"
         variant="raised"
         color="primary"
+        onClick={() => onClick()}
       >
         Edit <Edit />
       </Button>
@@ -34,6 +35,7 @@ function IconLabelButtons(props) {
 
 IconLabelButtons.propTypes = {
   classes: PropTypes.object.isRequired, // eslint-disable-line
+  onClick: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(IconLabelButtons);

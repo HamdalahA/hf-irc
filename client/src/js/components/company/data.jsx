@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import DeleteButton from '../shared/DeleteButton';
 import EditButton from '../shared/EditButton';
 import ViewButton from '../shared/ViewButton';
+import Modal from '../shared/EditCompanyModal';
 
 export const productColumns = [
   {
@@ -119,9 +120,9 @@ export const companiesColumns = [
     options: {
       filter: true,
       sort: true,
-      customRender: index => ( // eslint-disable-line
-        <EditButton />
-      )
+      customRender: (index, value) => { // eslint-disable-line
+        return <Modal value={value} />;
+      }
     }
   },
   {
@@ -143,17 +144,18 @@ export const productOptions = {
   selectableRows: false
 };
 
-export const companiesOptions = {
-  filterType: 'dropdown',
-  responsive: 'stacked',
-  // rowsPerPageOptions: [10, 20, 30],
-  selectableRows: false
-};
-
 export const certificateOptions = {
   filterType: 'dropdown',
   responsive: 'stacked',
   rowsPerPageOptions: [10, 20, 30],
   rowsPerPage: 5,
+  selectableRows: false
+};
+
+
+export const companiesOptions = {
+  filterType: 'dropdown',
+  responsive: 'stacked',
+  // rowsPerPageOptions: [10, 20, 30],
   selectableRows: false
 };

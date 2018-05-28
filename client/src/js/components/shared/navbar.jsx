@@ -19,11 +19,12 @@ const styles = {
     marginLeft: -12,
     marginRight: 5,
   },
+  color: {
+    color: 'white'
+  }
 };
 
 const logo = require('../../../assets/img/logo.jpg');
-
-console.log(location.pathname);
 
 class ButtonAppBar extends React.Component {
   constructor(props) {
@@ -64,8 +65,9 @@ class ButtonAppBar extends React.Component {
           :
                 <Link to="/companies">
                   <Button
-                    className="comp-title"
-                  >Veiw Companies
+                    variant="outlined"
+                    className={classes.color}
+                  >View Companies
                   </Button>
                 </Link>
           }
